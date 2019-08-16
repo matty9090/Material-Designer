@@ -9,4 +9,4 @@ install:
   - cmd: git submodule update --init --recursive
   - cmd: mkdir Build
   - cmd: cd Build
-  - cmd: cmake -G "Visual Studio 15 2017 -DINSTALL_GTEST=0" ..
+  - cmd: cmake -G "Visual Studio 15 2017" -DINSTALL_GTEST=0 ..
