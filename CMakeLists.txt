@@ -1,21 +1,21 @@
 cmake_minimum_required(VERSION 3.8.0)
 project (MaterialDesigner)
 
-# Main exe
-file(GLOB SRC_FILES ${PROJECT_SOURCE_DIR}/Source/*.cpp)
 set(CMAKE_CXX_STANDARD 11)
+option(ENABLE_TESTING "Turns on testing" OFF)
 
-add_library(MaterialDesignerLib ${SRC_FILES})
-add_executable(MaterialDesigner ${SRC_FILES})
+# Output dirs
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Lib)
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Lib)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Bin)
+
+# Main exe
+add_subdirectory(Source)
 
 # Tests
-enable_testing()
-file(GLOB TEST_SRC_FILES ${PROJECT_SOURCE_DIR}/Tests/*.cpp)
-add_subdirectory(Lib/googletest)
-include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
-add_executable(UnitTests ${TEST_SRC_FILES})
+if (ENABLE_TESTING)
+    enable_testing()
 
-target_link_libraries(UnitTests gtest gtest_main)
-target_link_libraries(UnitTests MaterialDesignerLib)
-
-add_test(Tests UnitTests)
+    add_subdirectory(${PROJECT_SOURCE_DIR}/Lib/googletest)
+    add_subdirectory(Tests)
+endif ()
