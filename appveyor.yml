@@ -1,0 +1,11 @@
+version: 0.0.{build}
+image: Visual Studio 2017
+
+branches:
+   only:
+     - master
+
+install:
+  - cmd: mkdir Build
+  - cmd: cd Build
+  - cmd: cmake -G "Visual Studio 15 2017" ..
