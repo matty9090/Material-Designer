@@ -1,1 +1,8 @@
 language: cpp
+os: windows
+
+script:
+ - mkdir Build
+ - cd Build
+ - cmake -G "MinGW Makefiles" ..
+ - mingw32-make
