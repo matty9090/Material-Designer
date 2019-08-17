@@ -36,12 +36,3 @@ TEST(IndependentMethod, LogError)
 
 	ASSERT_EQ(output, "[Error] Testing\n") << "Log output format unexpected";
 }
-
-TEST(IndependentMethod, LogVerbose)
-{
-	testing::internal::CaptureStdout();
-	FLog::Get().Log("Testing", FLog::Verbose);
-	std::string output = testing::internal::GetCapturedStdout();
-
-	ASSERT_EQ(output, "[Verbose] Testing\n") << "Log output format unexpected";
-}
