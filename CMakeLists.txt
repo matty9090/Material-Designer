@@ -9,7 +9,11 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Lib)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Lib)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Bin)
 
-# Main exe
+# DirectXTK
+add_subdirectory(${PROJECT_SOURCE_DIR}/Lib/DirectXTK)
+include_directories(${PROJECT_SOURCE_DIR}/Lib/DirectXTK/Inc)
+
+# Material Designer
 add_subdirectory(Source)
 
 # Tests
