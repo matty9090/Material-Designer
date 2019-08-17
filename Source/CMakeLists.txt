@@ -11,3 +11,7 @@ add_executable(MaterialDesigner WIN32 App/MaterialDesigner.cpp ../Resources/Reso
 target_link_libraries(MaterialDesigner MaterialDesignerLib)
 target_link_libraries(MaterialDesigner d3d11 dxgi)
 target_link_libraries(MaterialDesigner directxtk)
+
+add_custom_command(TARGET MaterialDesigner POST_BUILD
+				   COMMAND ${CMAKE_COMMAND} -E copy_directory
+				   ${CMAKE_SOURCE_DIR}/Assets/ $<TARGET_FILE_DIR:MaterialDesigner>/Assets/)

@@ -8,6 +8,8 @@
 #include "Services/Log.hpp"
 #include "Services/TextureManager.hpp"
 
+#include "SimpleMath.h"
+
 extern void ExitGame();
 
 using namespace DirectX;
@@ -72,8 +74,9 @@ void App::Render()
     m_deviceResources->PIXBeginEvent(L"Render");
     auto context = m_deviceResources->GetD3DDeviceContext();
 
-    // TODO: Add your rendering code here.
-    context;
+	m_spriteBatch->Begin();
+	m_spriteBatch->Draw(FTextureManager::Get().GetTexture("Background"), DirectX::SimpleMath::Vector2(0.0f, 0.0f), nullptr);
+	m_spriteBatch->End();
 
     m_deviceResources->PIXEndEvent();
 
@@ -156,25 +159,29 @@ void App::GetDefaultSize(int& width, int& height) const
 void App::CreateDeviceDependentResources()
 {
     auto device = m_deviceResources->GetD3DDevice();
+	auto context = m_deviceResources->GetD3DDeviceContext();
 
-	FTextureManager::Get().Initialize(device);
+	m_spriteBatch = std::make_unique<SpriteBatch>(context);
+
+	auto& tm = FTextureManager::Get();
+	tm.Initialize(device);
+	tm.LoadTexture("Background", L"bg.png");
 }
 
 // Allocate all memory resources that change on a window SizeChanged event.
 void App::CreateWindowSizeDependentResources()
 {
-    // TODO: Initialize windows-size dependent objects here.
+    
 }
 
 void App::OnDeviceLost()
 {
-    // TODO: Add Direct3D resource cleanup here.
+	m_spriteBatch.reset();
 }
 
 void App::OnDeviceRestored()
 {
     CreateDeviceDependentResources();
-
     CreateWindowSizeDependentResources();
 }
 #pragma endregion

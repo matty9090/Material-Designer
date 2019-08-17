@@ -7,6 +7,7 @@
 #include "App/DeviceResources.hpp"
 #include "App/StepTimer.hpp"
 
+#include "SpriteBatch.h"
 
 // A basic game implementation that creates a D3D11 device and
 // provides a game loop.
@@ -52,4 +53,6 @@ private:
 
     // Rendering loop timer.
     DX::StepTimer                           m_timer;
+
+	std::unique_ptr<DirectX::SpriteBatch>	m_spriteBatch;
 };
