@@ -13,11 +13,11 @@ environment:
     - GENERATOR: "Visual Studio 16 2019"
       CONFIG: Release
 
-    - GENERATOR: "Visual Studio 16 2019 Win64"
+    - GENERATOR: "Visual Studio 16 2019"
       CONFIG: Debug
       FLAGS: "-A Win64"
 
-    - GENERATOR: "Visual Studio 16 2019 Win64"
+    - GENERATOR: "Visual Studio 16 2019"
       CONFIG: Release
       FLAGS: "-A Win64"
 
