@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.8.0)
 project (MaterialDesigner)
 
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 14)
 option(ENABLE_TESTING "Turns on testing" OFF)
 
 # Output dirs

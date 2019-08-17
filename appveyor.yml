@@ -21,7 +21,8 @@ environment:
 
 build_script:
   - cmd: git submodule update --init --recursive
-  - cmd: Build.bat %GENERATOR% %CONFIG% -DENABLE_TESTING
+  - cmd: cmake -G "%GENERATOR%" -BBuild -DINSTALL_GTEST=0 -DBUILD_GMOCK=0 .
+  - cmd: cmake --build Build --config "%CONFIG%"
 
 test_script:
   - ctest -VV -C "%CONFIG%"
