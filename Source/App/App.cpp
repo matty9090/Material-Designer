@@ -72,11 +72,8 @@ void App::Render()
     Clear();
 
     m_deviceResources->PIXBeginEvent(L"Render");
-    auto context = m_deviceResources->GetD3DDeviceContext();
 
-	m_spriteBatch->Begin();
-	m_spriteBatch->Draw(FTextureManager::Get().GetTexture("Background"), DirectX::SimpleMath::Vector2(0.0f, 0.0f), nullptr);
-	m_spriteBatch->End();
+	m_ui->Render();
 
     m_deviceResources->PIXEndEvent();
 
@@ -161,11 +158,11 @@ void App::CreateDeviceDependentResources()
     auto device = m_deviceResources->GetD3DDevice();
 	auto context = m_deviceResources->GetD3DDeviceContext();
 
-	m_spriteBatch = std::make_unique<SpriteBatch>(context);
-
 	auto& tm = FTextureManager::Get();
 	tm.Initialize(device);
 	tm.LoadTexture("Background", L"bg.png");
+
+	m_ui = std::make_unique<UI>(context);
 }
 
 // Allocate all memory resources that change on a window SizeChanged event.
@@ -176,7 +173,7 @@ void App::CreateWindowSizeDependentResources()
 
 void App::OnDeviceLost()
 {
-	m_spriteBatch.reset();
+	
 }
 
 void App::OnDeviceRestored()
