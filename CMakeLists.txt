@@ -4,11 +4,6 @@ project (MaterialDesigner)
 set(CMAKE_CXX_STANDARD 14)
 option(ENABLE_TESTING "Turns on testing" OFF)
 
-# Output dirs
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Lib)
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Lib)
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Bin)
-
 # DirectXTK
 add_subdirectory(${PROJECT_SOURCE_DIR}/Lib/DirectXTK)
 include_directories(${PROJECT_SOURCE_DIR}/Lib/DirectXTK/Inc)
@@ -20,6 +15,7 @@ add_subdirectory(Source)
 if (ENABLE_TESTING)
     enable_testing()
 
+	include_directories(Source)
     add_subdirectory(${PROJECT_SOURCE_DIR}/Lib/googletest)
     add_subdirectory(Tests)
 endif ()
