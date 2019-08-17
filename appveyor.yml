@@ -25,5 +25,5 @@ build_script:
   - cmd: cmake --build Build --config "%CONFIG%"
 
 test_script:
-  - cmd Build
+  - cmd: cd Build
   - ctest -VV -C "%CONFIG%"
