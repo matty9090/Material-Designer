@@ -13,14 +13,6 @@ environment:
     - GENERATOR: "Visual Studio 16 2019"
       CONFIG: Release
 
-    - GENERATOR: "Visual Studio 16 2019"
-      CONFIG: Debug
-      FLAGS: "-A Win64"
-
-    - GENERATOR: "Visual Studio 16 2019"
-      CONFIG: Release
-      FLAGS: "-A Win64"
-
 build_script:
   - cmd: git submodule update --init --recursive
   - cmd: cmake -G "%GENERATOR%" %FLAGS% -BBuild -DINSTALL_GTEST=0 -DBUILD_GMOCK=0 -DENABLE_TESTING=1 -Dgtest_force_shared_crt=1 .
