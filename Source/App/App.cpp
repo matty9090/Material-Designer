@@ -2,15 +2,15 @@
 // App.cpp
 //
 
-#include "App/Core.hpp"
+#include "App/AppCore.hpp"
 #include "App/App.hpp"
 
 #include "Services/Log.hpp"
+#include "Services/TextureManager.hpp"
 
 extern void ExitGame();
 
 using namespace DirectX;
-
 using Microsoft::WRL::ComPtr;
 
 App::App() noexcept(false)
@@ -31,6 +31,8 @@ void App::Initialize(HWND window, int width, int height)
 
     m_deviceResources->CreateWindowSizeDependentResources();
     CreateWindowSizeDependentResources();
+
+	FLog::Get().Log("Initialized");
 }
 
 #pragma region Frame Update
@@ -155,8 +157,7 @@ void App::CreateDeviceDependentResources()
 {
     auto device = m_deviceResources->GetD3DDevice();
 
-    // TODO: Initialize device dependent objects here (independent of window size).
-    device;
+	FTextureManager::Get().Initialize(device);
 }
 
 // Allocate all memory resources that change on a window SizeChanged event.

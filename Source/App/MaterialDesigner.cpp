@@ -2,7 +2,7 @@
 // Main.cpp
 //
 
-#include "App/Core.hpp"
+#include "App/AppCore.hpp"
 #include "App/App.hpp"
 
 using namespace DirectX;
@@ -26,9 +26,12 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, 
 {
 #ifdef _DEBUG
 	AllocConsole();
-	freopen("conin$", "r", stdin);
-	freopen("conout$", "w", stdout);
-	freopen("conout$", "w", stderr);
+
+	FILE *stdOut, *stdErr, *stdIn;
+
+	freopen_s(&stdOut, "conin$", "r", stdin);
+	freopen_s(&stdErr, "conout$", "w", stdout);
+	freopen_s(&stdIn,  "conout$", "w", stderr);
 #endif
 
     UNREFERENCED_PARAMETER(hPrevInstance);
