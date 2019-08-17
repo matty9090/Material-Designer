@@ -2,8 +2,8 @@
 // Main.cpp
 //
 
-#include "Core.h"
-#include "App.h"
+#include "App/Core.hpp"
+#include "App/App.hpp"
 
 using namespace DirectX;
 
@@ -24,6 +24,13 @@ extern "C"
 // Entry point
 int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPWSTR lpCmdLine, _In_ int nCmdShow)
 {
+#ifdef _DEBUG
+	AllocConsole();
+	freopen("conin$", "r", stdin);
+	freopen("conout$", "w", stdout);
+	freopen("conout$", "w", stderr);
+#endif
+
     UNREFERENCED_PARAMETER(hPrevInstance);
     UNREFERENCED_PARAMETER(lpCmdLine);
 

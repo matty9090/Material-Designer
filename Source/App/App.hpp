@@ -4,8 +4,8 @@
 
 #pragma once
 
-#include "DeviceResources.h"
-#include "StepTimer.h"
+#include "App/DeviceResources.hpp"
+#include "App/StepTimer.hpp"
 
 
 // A basic game implementation that creates a D3D11 device and

@@ -3,8 +3,8 @@
 //                       (requires DirectX 11.1 Runtime)
 //
 
-#include "Core.h"
-#include "DeviceResources.h"
+#include "App/Core.hpp"
+#include "App/DeviceResources.hpp"
 
 using namespace DirectX;
 using namespace DX;

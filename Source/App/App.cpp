@@ -2,8 +2,10 @@
 // App.cpp
 //
 
-#include "Core.h"
-#include "App.h"
+#include "App/Core.hpp"
+#include "App/App.hpp"
+
+#include "Services/Log.hpp"
 
 extern void ExitGame();
 
@@ -20,6 +22,8 @@ App::App() noexcept(false)
 // Initialize the Direct3D resources required to run.
 void App::Initialize(HWND window, int width, int height)
 {
+	FLog::Get().Log("Initializing...");
+
     m_deviceResources->SetWindow(window, width, height);
 
     m_deviceResources->CreateDeviceResources();
@@ -140,9 +144,8 @@ void App::OnWindowSizeChanged(int width, int height)
 // Properties
 void App::GetDefaultSize(int& width, int& height) const
 {
-    // TODO: Change to desired default window size (note minimum size is 320x200).
-    width = 800;
-    height = 600;
+    width = 1400;
+    height = 900;
 }
 #pragma endregion
 
