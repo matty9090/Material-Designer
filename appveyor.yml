@@ -9,19 +9,17 @@ environment:
   matrix:
     - GENERATOR: "Visual Studio 16 2019"
       CONFIG: Debug
-	  FLAGS: ""
 
     - GENERATOR: "Visual Studio 16 2019"
       CONFIG: Release
-	  FLAGS: ""
 
     - GENERATOR: "Visual Studio 16 2019 Win64"
       CONFIG: Debug
-	  FLAGS: "-A Win64"
+      FLAGS: "-A Win64"
 
     - GENERATOR: "Visual Studio 16 2019 Win64"
       CONFIG: Release
-	  FLAGS: "-A Win64"
+      FLAGS: "-A Win64"
 
 build_script:
   - cmd: git submodule update --init --recursive
