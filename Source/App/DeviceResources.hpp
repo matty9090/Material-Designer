@@ -40,6 +40,7 @@ namespace DX
 
         // Device Accessors.
         RECT GetOutputSize() const { return m_outputSize; }
+        HWND GetWindow()     const { return m_window; }
 
         // Direct3D Accessors.
         ID3D11Device1*          GetD3DDevice() const                    { return m_d3dDevice.Get(); }
@@ -48,7 +49,7 @@ namespace DX
         D3D_FEATURE_LEVEL       GetDeviceFeatureLevel() const           { return m_d3dFeatureLevel; }
         ID3D11Texture2D*        GetRenderTarget() const                 { return m_renderTarget.Get(); }
         ID3D11Texture2D*        GetDepthStencil() const                 { return m_depthStencil.Get(); }
-        ID3D11RenderTargetView*	GetRenderTargetView() const             { return m_d3dRenderTargetView.Get(); }
+        ID3D11RenderTargetView*    GetRenderTargetView() const             { return m_d3dRenderTargetView.Get(); }
         ID3D11DepthStencilView* GetDepthStencilView() const             { return m_d3dDepthStencilView.Get(); }
         DXGI_FORMAT             GetBackBufferFormat() const             { return m_backBufferFormat; }
         DXGI_FORMAT             GetDepthBufferFormat() const            { return m_depthBufferFormat; }

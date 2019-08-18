@@ -6,26 +6,26 @@
 class FLog
 {
 public:
-	enum ELogType { Verbose, Info, Warning, Error };
+    enum ELogType { Verbose, Info, Warning, Error };
 
-	static FLog& Get()
-	{
-		static FLog instance;
-		return instance;
-	}
+    static FLog& Get()
+    {
+        static FLog instance;
+        return instance;
+    }
 
-	FLog(FLog const&) = delete;
-	void operator=(FLog const&) = delete;
+    FLog(FLog const&) = delete;
+    void operator=(FLog const&) = delete;
 
-	void Log(std::string msg, ELogType logLevel = Info);
+    void Log(std::string msg, ELogType logLevel = Info);
 
 private:
-	FLog() {}
+    FLog() {}
 
-	std::map<ELogType, std::string> LogTypes = {
-		{ Verbose, "Verbose"},
-		{ Info, "Info"},
-		{ Warning, "Warning"},
-		{ Error, "Error"}
-	};
+    std::map<ELogType, std::string> LogTypes = {
+        { Verbose, "Verbose"},
+        { Info, "Info"},
+        { Warning, "Warning"},
+        { Error, "Error"}
+    };
 };

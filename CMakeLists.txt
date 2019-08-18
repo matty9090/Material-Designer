@@ -15,7 +15,7 @@ add_subdirectory(Source)
 if (ENABLE_TESTING)
     enable_testing()
 
-	include_directories(Source)
+    include_directories(Source)
     add_subdirectory(${PROJECT_SOURCE_DIR}/Lib/googletest)
     add_subdirectory(Tests)
 endif ()

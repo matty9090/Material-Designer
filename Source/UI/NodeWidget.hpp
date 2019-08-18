@@ -5,10 +5,10 @@
 class FNodeWidget : public FDraggableWidget
 {
 public:
-	FNodeWidget();
+    FNodeWidget();
 
-	void Draw() override;
-	void Update(float dt) override;
+    void Draw() override;
+    void Update(float dt) override;
 
 protected:
 

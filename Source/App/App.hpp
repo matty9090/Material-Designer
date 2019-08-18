@@ -58,5 +58,5 @@ private:
     // Rendering loop timer.
     DX::StepTimer                           m_timer;
 
-	std::unique_ptr<UI>						m_ui;
+    std::unique_ptr<UI>                        m_ui;
 };

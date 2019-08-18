@@ -24,7 +24,7 @@ App::App() noexcept(false)
 // Initialize the Direct3D resources required to run.
 void App::Initialize(HWND window, int width, int height)
 {
-	FLog::Get().Log("Initializing...");
+    FLog::Get().Log("Initializing...");
 
     m_deviceResources->SetWindow(window, width, height);
 
@@ -34,7 +34,7 @@ void App::Initialize(HWND window, int width, int height)
     m_deviceResources->CreateWindowSizeDependentResources();
     CreateWindowSizeDependentResources();
 
-	FLog::Get().Log("Initialized");
+    FLog::Get().Log("Initialized");
 }
 
 #pragma region Frame Update
@@ -54,7 +54,7 @@ void App::Update(DX::StepTimer const& timer)
 {
     float elapsedTime = float(timer.GetElapsedSeconds());
 
-	m_ui->Update(elapsedTime);
+    m_ui->Update(elapsedTime);
 }
 #pragma endregion
 
@@ -72,7 +72,7 @@ void App::Render()
 
     m_deviceResources->PIXBeginEvent(L"Render");
 
-	m_ui->Render();
+    m_ui->Render();
 
     m_deviceResources->PIXEndEvent();
 
@@ -155,13 +155,13 @@ void App::GetDefaultSize(int& width, int& height) const
 void App::CreateDeviceDependentResources()
 {
     auto device = m_deviceResources->GetD3DDevice();
-	auto context = m_deviceResources->GetD3DDeviceContext();
+    auto context = m_deviceResources->GetD3DDeviceContext();
 
-	auto& tm = FTextureManager::Get();
-	tm.Initialize(device);
-	tm.LoadTexture("Background", L"bg.png");
+    auto& tm = FTextureManager::Get();
+    tm.Initialize(device);
+    tm.LoadTexture("Background", L"bg.png");
 
-	m_ui = std::make_unique<UI>(context);
+    m_ui = std::make_unique<UI>(context, m_deviceResources->GetWindow());
 }
 
 // Allocate all memory resources that change on a window SizeChanged event.
@@ -172,7 +172,7 @@ void App::CreateWindowSizeDependentResources()
 
 void App::OnDeviceLost()
 {
-	
+    
 }
 
 void App::OnDeviceRestored()
