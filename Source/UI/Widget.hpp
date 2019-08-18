@@ -2,11 +2,22 @@
 
 #include <memory>
 
-class FWidget
+namespace DirectX
+{
+    class SpriteBatch;
+
+    namespace SimpleMath
+    {
+        struct Rectangle;
+    }
+}
+
+class IWidget
 {
 public:
-    virtual void Draw();
-    virtual void Update(float dt);
+    virtual void Draw(std::unique_ptr<DirectX::SpriteBatch>& Batch) = 0;
+    virtual void Update(float dt) = 0;
+    virtual void SetPosition(int x, int y) = 0;
 
     virtual void OnHover() {}
     virtual void OnUnHover() {}
@@ -14,9 +25,9 @@ public:
     virtual void OnFocus() {}
     virtual void OnUnFocus() {}
 
-    virtual void OnDragBegin() {}
+    virtual void OnDragBegin(int mx, int my) {}
+    virtual void OnDragUpdate(int mx, int my) {}
     virtual void OnDragEnd() {}
-    
-protected:
-    std::unique_ptr<FWidget> Child;
+
+    virtual DirectX::SimpleMath::Rectangle GetBounds() = 0;
 };

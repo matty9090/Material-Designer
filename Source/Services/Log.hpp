@@ -3,6 +3,15 @@
 #include <map>
 #include <string>
 
+namespace DirectX
+{
+    namespace SimpleMath
+    {
+        struct Vector2;
+        struct Vector3;
+    }
+}
+
 class FLog
 {
 public:
@@ -17,7 +26,11 @@ public:
     FLog(FLog const&) = delete;
     void operator=(FLog const&) = delete;
 
+    void Log(int num, ELogType logLevel = Info);
+    void Log(double num, ELogType logLevel = Info);
     void Log(std::string msg, ELogType logLevel = Info);
+    void Log(DirectX::SimpleMath::Vector2 v, ELogType logLevel = Info);
+    void Log(DirectX::SimpleMath::Vector3 v, ELogType logLevel = Info);
 
 private:
     FLog() {}

@@ -6,6 +6,7 @@
 #include <Mouse.h>
 
 #include "Widget.hpp"
+#include "WidgetFactory.hpp"
 
 class UI
 {
@@ -20,7 +21,21 @@ private:
     ID3D11DeviceContext* Context;
     ID3D11ShaderResourceView* Background;
 
+    struct SWidget
+    {
+        bool IsHovered = false;
+        bool IsFocused = false;
+        bool IsDragging = false;
+
+        std::unique_ptr<IWidget> Widget;
+
+        SWidget(std::unique_ptr<IWidget> widget) : Widget(std::move(widget)) {}
+    };
+
+    FWidgetFactory WidgetFactory;
+    DirectX::Mouse::ButtonStateTracker Tracker;
+
     std::unique_ptr<DirectX::Mouse> Mouse;
     std::unique_ptr<DirectX::SpriteBatch> Batch;
-    std::vector<std::unique_ptr<FWidget>> Widgets;
+    std::vector<SWidget> Widgets;
 };

@@ -14,10 +14,7 @@ void FTextureManager::Initialize(ID3D11Device* device)
 bool FTextureManager::LoadTexture(std::string key, std::wstring file)
 {
     if (Textures.find(key) != Textures.end())
-    {
-        FLog::Get().Log("Texture entry already exists! Keeping old texture.", FLog::Warning);
         return false;
-    }
 
     // Load texture
     ComPtr<ID3D11Resource> resource = nullptr;
