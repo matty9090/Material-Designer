@@ -38,9 +38,21 @@ FNodeWidget::FNodeWidget(ID3D11DeviceContext* context) : Context(context)
     FWidgetFactory factory(context);
     
     auto txtWidget = factory.CreateTextWidget(this, "Node");
-    txtWidget->SetPosition(10, 8);
+    txtWidget->SetPosition(8, 8);
+
+    auto conWidget1 = factory.CreateNodeConnectionWidget(this, "Parameter 1");
+    conWidget1->SetPosition(10, TopHeight + 8);
+
+    auto conWidget2 = factory.CreateNodeConnectionWidget(this, "Parameter 2");
+    conWidget2->SetPosition(10, TopHeight + 32);
+
+    auto conWidget3 = factory.CreateNodeConnectionWidget(this, "Parameter 3");
+    conWidget3->SetPosition(10, TopHeight + 56);
 
     AddChildWidget(std::move(txtWidget));
+    AddChildWidget(std::move(conWidget1));
+    AddChildWidget(std::move(conWidget2));
+    AddChildWidget(std::move(conWidget3));
 }
 
 void FNodeWidget::Draw(std::unique_ptr<DirectX::SpriteBatch>& Batch)

@@ -1,10 +1,11 @@
 #pragma once
 
 #include <d3d11.h>
+#include <Mouse.h>
 #include <SpriteBatch.h>
+#include <CommonStates.h>
+
 #include <vector>
-#include <Mouse.h>
-#include <Mouse.h>
 
 #include "Widget.hpp"
 #include "WidgetFactory.hpp"
@@ -45,6 +46,7 @@ private:
 
     std::unique_ptr<DirectX::Mouse> Mouse;
     std::unique_ptr<DirectX::SpriteBatch> Batch;
+    std::unique_ptr<DirectX::CommonStates> States;
     
     std::vector<SWidget> Widgets;
 };

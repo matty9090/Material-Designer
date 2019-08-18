@@ -23,11 +23,16 @@ UI::UI(ID3D11DeviceContext* context, HWND hwnd) : Context(context), WidgetFactor
     Background = FAssetManager::Get().GetTexture("Background");
 
     Widgets.push_back(SWidget(std::move(WidgetFactory.CreateNodeWidget())));
+
+    ID3D11Device* device = nullptr;
+    context->GetDevice(&device);
+
+    States = std::make_unique<DirectX::CommonStates>(device);
 }
 
 void UI::Render()
 {
-    Batch->Begin();
+    Batch->Begin(DirectX::SpriteSortMode_Deferred, States->NonPremultiplied());
     Batch->Draw(Background, Vector2(0.0f, 0.0f), DirectX::Colors::White);
 
     std::for_each(Widgets.begin(), Widgets.end(), [this](SWidget& widget) {
