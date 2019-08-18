@@ -2,6 +2,7 @@
 
 #include "Widget.hpp"
 
+#include <string>
 #include <d3d11.h>
 #include <SimpleMath.h>
 #include <SpriteBatch.h>

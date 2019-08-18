@@ -9,8 +9,8 @@ FTextWidget::FTextWidget(IWidget* parent, std::string txt) : IWidget(parent), Te
     
     Vector2 txtSize = Font->MeasureString(txt.c_str());
 
-    Bounds.width = txtSize.x;
-    Bounds.height = txtSize.y;
+    Bounds.width = static_cast<long>(txtSize.x);
+    Bounds.height = static_cast<long>(txtSize.y);
 }
 
 void FTextWidget::Draw(std::unique_ptr<DirectX::SpriteBatch>& Batch)

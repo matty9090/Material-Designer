@@ -76,8 +76,9 @@ bool FAssetManager::LoadFont(std::string key, std::wstring file)
         throw file_not_found(key);
 
     FLog::Get().Log("Loaded font '" + key + "'");
-
     Fonts[key] = std::move(font);
+
+    return true;
 }
 
 DirectX::SpriteFont* FAssetManager::GetFont(std::string key)

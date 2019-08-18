@@ -106,7 +106,7 @@ bool FNodeWidget::OnDragBegin(int mx, int my)
 
 void FNodeWidget::OnDragUpdate(int mx, int my)
 {
-    if (!FCompoundWidget::OnChildDragUpdate(DragOffset.x, DragOffset.y))
+    if (!FCompoundWidget::OnChildDragUpdate(static_cast<int>(DragOffset.x), static_cast<int>(DragOffset.y)))
     {
         SetPosition(mx + static_cast<int>(DragOffset.x), my + static_cast<int>(DragOffset.y));
     }
