@@ -11,3 +11,4 @@ Bin/
 Build/
 .vs/
 CMakeSettings.json
+*MakeSpriteFont.exe

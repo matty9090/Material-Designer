@@ -2,7 +2,7 @@
 #include "WidgetFactory.hpp"
 
 #include "Services/Log.hpp"
-#include "Services/TextureManager.hpp"
+#include "Services/AssetManager.hpp"
 
 #include <algorithm>
 #include <d3d11.h>
@@ -13,11 +13,14 @@ using ButtonState = DirectX::Mouse::ButtonStateTracker::ButtonState;
 
 UI::UI(ID3D11DeviceContext* context, HWND hwnd) : Context(context), WidgetFactory(context)
 {
+    FAssetManager::Get().LoadFont("NodeTitle", L"Fonts/arial14.font");
+    Font = FAssetManager::Get().GetFont("NodeTitle");
+
     Mouse = std::make_unique<DirectX::Mouse>();
     Mouse->SetWindow(hwnd);
 
     Batch = std::make_unique<DirectX::SpriteBatch>(context);
-    Background = FTextureManager::Get().GetTexture("Background");
+    Background = FAssetManager::Get().GetTexture("Background");
 
     Widgets.push_back(SWidget(std::move(WidgetFactory.CreateNodeWidget())));
 }
@@ -46,22 +49,22 @@ void UI::Update(float dt)
         bool isInBounds = bounds.Contains(mouse.x, mouse.y);
 
         if (!widget.IsHovered && isInBounds)
-            widget.IsHovered = true, widget.Widget->OnHover();
+            widget.IsHovered = true, widget.Widget->OnHover(mouse.x, mouse.y);
 
         if (widget.IsHovered && !isInBounds)
-            widget.IsHovered = false, widget.Widget->OnUnHover();
+            widget.IsHovered = false, widget.Widget->OnUnHover(mouse.x, mouse.y);
 
-        if (Tracker.leftButton == ButtonState::PRESSED && isInBounds && !widget.IsFocused)
-            widget.IsFocused = true, widget.Widget->OnFocus();
+        if (Tracker.leftButton == ButtonState::PRESSED && isInBounds)
+            widget.IsFocused = true, widget.Widget->OnFocus(mouse.x, mouse.y);
 
         if (Tracker.leftButton == ButtonState::RELEASED && !isInBounds && widget.IsFocused)
-            widget.IsFocused = false, widget.Widget->OnUnFocus();
+            widget.IsFocused = false, widget.Widget->OnUnFocus(mouse.x, mouse.y);
 
-        if (Tracker.leftButton == ButtonState::HELD && widget.IsFocused && !widget.IsDragging)
-            widget.IsDragging = true, widget.Widget->OnDragBegin(mouse.x, mouse.y);
+        if (Tracker.leftButton == ButtonState::HELD && isInBounds && !widget.IsDragging)
+            widget.IsDragging = widget.Widget->OnDragBegin(mouse.x, mouse.y);
 
         if (Tracker.leftButton == ButtonState::RELEASED && widget.IsDragging)
-            widget.IsDragging = false,  widget.Widget->OnDragEnd();
+            widget.IsDragging = false,  widget.Widget->OnDragEnd(mouse.x, mouse.y);
 
         if (widget.IsDragging)
             widget.Widget->OnDragUpdate(mouse.x, mouse.y);

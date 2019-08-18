@@ -6,7 +6,7 @@
 #include "App/App.hpp"
 
 #include "Services/Log.hpp"
-#include "Services/TextureManager.hpp"
+#include "Services/AssetManager.hpp"
 
 #include "SimpleMath.h"
 
@@ -157,9 +157,9 @@ void App::CreateDeviceDependentResources()
     auto device = m_deviceResources->GetD3DDevice();
     auto context = m_deviceResources->GetD3DDeviceContext();
 
-    auto& tm = FTextureManager::Get();
+    auto& tm = FAssetManager::Get();
     tm.Initialize(device);
-    tm.LoadTexture("Background", L"bg.png");
+    tm.LoadTexture("Background", L"Img/bg.png");
 
     m_ui = std::make_unique<UI>(context, m_deviceResources->GetWindow());
 }

@@ -1,17 +1,17 @@
-#include "TextureManager.hpp"
+#include "AssetManager.hpp"
 #include "Core/Except.hpp"
 #include "Log.hpp"
 
-#include "WICTextureLoader.h"
+#include <WICTextureLoader.h>
 
 using Microsoft::WRL::ComPtr;
 
-void FTextureManager::Initialize(ID3D11Device* device)
+void FAssetManager::Initialize(ID3D11Device* device)
 {
     Device = device;
 }
 
-bool FTextureManager::LoadTexture(std::string key, std::wstring file)
+bool FAssetManager::LoadTexture(std::string key, std::wstring file)
 {
     if (Textures.find(key) != Textures.end())
         return false;
@@ -37,7 +37,7 @@ bool FTextureManager::LoadTexture(std::string key, std::wstring file)
     return true;
 }
 
-ID3D11ShaderResourceView* FTextureManager::GetTexture(std::string key)
+ID3D11ShaderResourceView* FAssetManager::GetTexture(std::string key)
 {
     if (Textures.find(key) != Textures.end())
         return Textures[key].Texture.Get();
@@ -48,7 +48,7 @@ ID3D11ShaderResourceView* FTextureManager::GetTexture(std::string key)
     return nullptr;
 }
 
-ID3D11ShaderResourceView* FTextureManager::GetTexture(std::string key, unsigned int& Width, unsigned int& Height)
+ID3D11ShaderResourceView* FAssetManager::GetTexture(std::string key, unsigned int& Width, unsigned int& Height)
 {
     if (Textures.find(key) != Textures.end())
     {
@@ -60,6 +60,32 @@ ID3D11ShaderResourceView* FTextureManager::GetTexture(std::string key, unsigned 
     }
 
     FLog::Get().Log("Could not find texture '" + key + "'!", FLog::Error);
+    throw file_not_found(key);
+
+    return nullptr;
+}
+
+bool FAssetManager::LoadFont(std::string key, std::wstring file)
+{
+    if (Fonts.find(key) != Fonts.end())
+        return false;
+
+    std::unique_ptr<DirectX::SpriteFont> font = std::make_unique<DirectX::SpriteFont>(Device, (Folder + file).c_str());
+
+    if (font == nullptr)
+        throw file_not_found(key);
+
+    FLog::Get().Log("Loaded font '" + key + "'");
+
+    Fonts[key] = std::move(font);
+}
+
+DirectX::SpriteFont* FAssetManager::GetFont(std::string key)
+{
+    if (Fonts.find(key) != Fonts.end())
+        return Fonts[key].get();
+
+    FLog::Get().Log("Could not find font '" + key + "'!", FLog::Error);
     throw file_not_found(key);
 
     return nullptr;

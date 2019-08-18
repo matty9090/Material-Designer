@@ -4,9 +4,15 @@
 #include <SpriteBatch.h>
 #include <vector>
 #include <Mouse.h>
+#include <Mouse.h>
 
 #include "Widget.hpp"
 #include "WidgetFactory.hpp"
+
+namespace DirectX
+{
+    class SpriteFont;
+}
 
 class UI
 {
@@ -33,9 +39,12 @@ private:
     };
 
     FWidgetFactory WidgetFactory;
+    
+    DirectX::SpriteFont* Font;
     DirectX::Mouse::ButtonStateTracker Tracker;
 
     std::unique_ptr<DirectX::Mouse> Mouse;
     std::unique_ptr<DirectX::SpriteBatch> Batch;
+    
     std::vector<SWidget> Widgets;
 };
