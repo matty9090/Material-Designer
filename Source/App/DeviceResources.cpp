@@ -180,7 +180,7 @@ void DeviceResources::CreateDeviceResources()
             device.GetAddressOf(),  // Returns the Direct3D device created.
             &m_d3dFeatureLevel,     // Returns feature level of device created.
             context.GetAddressOf()  // Returns the device immediate context.
-            );
+        );
     }
 #if defined(NDEBUG)
     else
@@ -204,7 +204,7 @@ void DeviceResources::CreateDeviceResources()
             device.GetAddressOf(),
             &m_d3dFeatureLevel,
             context.GetAddressOf()
-            );
+        );
 
         if (SUCCEEDED(hr))
         {
@@ -274,7 +274,7 @@ void DeviceResources::CreateWindowSizeDependentResources()
             backBufferHeight,
             backBufferFormat,
             (m_options & c_AllowTearing) ? DXGI_SWAP_CHAIN_FLAG_ALLOW_TEARING : 0u
-            );
+        );
 
         if (hr == DXGI_ERROR_DEVICE_REMOVED || hr == DXGI_ERROR_DEVICE_RESET)
         {
@@ -321,7 +321,7 @@ void DeviceResources::CreateWindowSizeDependentResources()
             &swapChainDesc,
             &fsSwapChainDesc,
             nullptr, m_swapChain.ReleaseAndGetAddressOf()
-            ));
+        ));
 
         // This class does not support exclusive full-screen mode and prevents DXGI from responding to the ALT+ENTER shortcut
         ThrowIfFailed(m_dxgiFactory->MakeWindowAssociation(m_window, DXGI_MWA_NO_ALT_ENTER));
@@ -338,7 +338,7 @@ void DeviceResources::CreateWindowSizeDependentResources()
         m_renderTarget.Get(),
         &renderTargetViewDesc,
         m_d3dRenderTargetView.ReleaseAndGetAddressOf()
-        ));
+    ));
 
     if (m_depthBufferFormat != DXGI_FORMAT_UNKNOWN)
     {
@@ -349,21 +349,23 @@ void DeviceResources::CreateWindowSizeDependentResources()
             backBufferHeight,
             1, // This depth stencil view has only one texture.
             1, // Use a single mipmap level.
-            D3D11_BIND_DEPTH_STENCIL
-            );
+            D3D11_BIND_DEPTH_STENCIL,
+            D3D11_USAGE_DEFAULT,
+            0, 1, 0
+        );
 
         ThrowIfFailed(m_d3dDevice->CreateTexture2D(
             &depthStencilDesc,
             nullptr,
             m_depthStencil.ReleaseAndGetAddressOf()
-            ));
+        ));
 
-        CD3D11_DEPTH_STENCIL_VIEW_DESC depthStencilViewDesc(D3D11_DSV_DIMENSION_TEXTURE2D);
+        CD3D11_DEPTH_STENCIL_VIEW_DESC depthStencilViewDesc(D3D11_DSV_DIMENSION_TEXTURE2DMS);
         ThrowIfFailed(m_d3dDevice->CreateDepthStencilView(
             m_depthStencil.Get(),
             &depthStencilViewDesc,
             m_d3dDepthStencilView.ReleaseAndGetAddressOf()
-            ));
+        ));
     }
 
     // Set the 3D rendering viewport to target the entire window.
@@ -420,6 +422,7 @@ void DeviceResources::HandleDeviceLost()
     m_swapChain.Reset();
     m_d3dContext.Reset();
     m_d3dAnnotation.Reset();
+    m_raster.Reset();
 
 #ifdef _DEBUG
     {

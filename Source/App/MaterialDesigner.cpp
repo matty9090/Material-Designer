@@ -45,7 +45,14 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, 
     if (FAILED(hr))
         return 1;
 
-    g_app = std::make_unique<App>();
+    try
+    {
+        g_app = std::make_unique<App>();
+    }
+    catch (std::exception ex)
+    {
+        MessageBoxA(nullptr, ex.what(), "Error", MB_OK | MB_ICONEXCLAMATION);
+    }
 
     // Register class and create window
     {
@@ -87,8 +94,16 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, 
         SetWindowLongPtr(hwnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(g_app.get()) );
 
         GetClientRect(hwnd, &rc);
-
-        g_app->Initialize(hwnd, rc.right - rc.left, rc.bottom - rc.top);
+        
+        try
+        {
+            g_app->Initialize(hwnd, rc.right - rc.left, rc.bottom - rc.top);
+        }
+        catch (std::exception ex)
+        {
+            MessageBoxA(hwnd, ex.what(), "Error", MB_OK | MB_ICONEXCLAMATION);
+            return 1;
+        }
     }
 
     // Main message loop
