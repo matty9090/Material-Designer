@@ -54,8 +54,7 @@ void App::Update(DX::StepTimer const& timer)
 {
     float elapsedTime = float(timer.GetElapsedSeconds());
 
-    // TODO: Add your game logic here.
-    elapsedTime;
+	m_ui->Update(elapsedTime);
 }
 #pragma endregion
 

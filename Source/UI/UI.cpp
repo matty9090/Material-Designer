@@ -1,4 +1,5 @@
 #include "UI.hpp"
+#include "WidgetFactory.hpp"
 #include "Services/TextureManager.hpp"
 
 #include "SimpleMath.h"
@@ -16,6 +17,11 @@ void UI::Render()
 	Batch->Begin();
 	Batch->Draw(Background, Vector2(0.0f, 0.0f), DirectX::Colors::White);
 	Batch->End();
+}
+
+void UI::Update(float dt)
+{
+
 }
 
 void UI::Reset()
