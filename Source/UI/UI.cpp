@@ -1,82 +1,63 @@
 #include "UI.hpp"
-#include "WidgetFactory.hpp"
 
 #include "Services/Log.hpp"
 #include "Services/AssetManager.hpp"
 
-#include <algorithm>
-#include <d3d11.h>
-#include <SimpleMath.h>
+#include <imgui.h>
 
-using DirectX::SimpleMath::Vector2;
-using ButtonState = DirectX::Mouse::ButtonStateTracker::ButtonState;
+#include "ImGuiDx11.h"
+#include "ImGuiWin32.h"
 
-UI::UI(ID3D11DeviceContext* context, HWND hwnd) : Context(context), WidgetFactory(context)
-{
-    FAssetManager::Get().LoadFont("NodeTitle", L"Fonts/arial14.font");
-    Font = FAssetManager::Get().GetFont("NodeTitle");
-
-    Mouse = std::make_unique<DirectX::Mouse>();
-    Mouse->SetWindow(hwnd);
-
-    Batch = std::make_unique<DirectX::SpriteBatch>(context);
-    Background = FAssetManager::Get().GetTexture("Background");
-
-    Widgets.push_back(SWidget(std::move(WidgetFactory.CreateNodeWidget())));
-
+UI::UI(ID3D11DeviceContext* context, HWND hwnd) : Context(context)
+{    
     ID3D11Device* device = nullptr;
     context->GetDevice(&device);
 
-    States = std::make_unique<DirectX::CommonStates>(device);
+    ImGui::CreateContext();
+    ImGuiIO& io = ImGui::GetIO();
+    ImGui::StyleColorsDark();
+
+    ImGui_ImplWin32_Init(hwnd);
+    ImGui_ImplDX11_Init(device, context);
+}
+
+UI::~UI()
+{
+    ImGui_ImplDX11_Shutdown();
+    ImGui_ImplWin32_Shutdown();
+    ImGui::DestroyContext();
 }
 
 void UI::Render()
 {
-    Batch->Begin(DirectX::SpriteSortMode_Deferred, States->NonPremultiplied());
-    Batch->Draw(Background, Vector2(0.0f, 0.0f), DirectX::Colors::White);
+    ImGui_ImplDX11_NewFrame();
+    ImGui_ImplWin32_NewFrame();
+    ImGui::NewFrame();
 
-    std::for_each(Widgets.begin(), Widgets.end(), [this](SWidget& widget) {
-        widget.Widget->Draw(Batch);
-    });
+    bool open = true;
+    ImGui::Begin("Test", &open, ImGuiWindowFlags_::ImGuiWindowFlags_AlwaysAutoResize);
+    ImGui::Text("Hello, world %d", 123);
+    if (ImGui::Button("Save"))
+    {
+        // do stuff
+    }
+    char buf[200] = "Testing...";
+    float f = 0.0f;
 
-    Batch->End();
+    ImGui::InputText("string", buf, IM_ARRAYSIZE(buf));
+    ImGui::SliderFloat("float", &f, 0.0f, 1.0f);
+    ImGui::End();
+
+    ImGui::Render();
+    ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
 }
 
 void UI::Update(float dt)
 {
-    auto mouse = Mouse->GetState();
-    Tracker.Update(mouse);
 
-    std::for_each(Widgets.begin(), Widgets.end(), [this, dt, mouse](SWidget& widget) {
-        widget.Widget->Update(dt);
-
-        auto &bounds = widget.Widget->GetBounds();
-        bool isInBounds = bounds.Contains(mouse.x, mouse.y);
-
-        if (!widget.IsHovered && isInBounds)
-            widget.IsHovered = true, widget.Widget->OnHover(mouse.x, mouse.y);
-
-        if (widget.IsHovered && !isInBounds)
-            widget.IsHovered = false, widget.Widget->OnUnHover(mouse.x, mouse.y);
-
-        if (Tracker.leftButton == ButtonState::PRESSED && isInBounds)
-            widget.IsFocused = true, widget.Widget->OnFocus(mouse.x, mouse.y);
-
-        if (Tracker.leftButton == ButtonState::RELEASED && !isInBounds && widget.IsFocused)
-            widget.IsFocused = false, widget.Widget->OnUnFocus(mouse.x, mouse.y);
-
-        if (Tracker.leftButton == ButtonState::HELD && isInBounds && !widget.IsDragging)
-            widget.IsDragging = widget.Widget->OnDragBegin(mouse.x, mouse.y);
-
-        if (Tracker.leftButton == ButtonState::RELEASED && widget.IsDragging)
-            widget.IsDragging = false,  widget.Widget->OnDragEnd(mouse.x, mouse.y);
-
-        if (widget.IsDragging)
-            widget.Widget->OnDragUpdate(mouse.x, mouse.y);
-    });
 }
 
 void UI::Reset()
 {
-    Batch.reset();
+
 }

@@ -4,3 +4,6 @@
 [submodule "Lib/DirectXTK"]
 	path = Lib/DirectXTK
 	url = https://github.com/microsoft/DirectXTK.git
+[submodule "Lib/imgui"]
+	path = Lib/imgui
+	url = https://github.com/ocornut/imgui.git

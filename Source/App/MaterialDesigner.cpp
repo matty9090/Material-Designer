@@ -5,6 +5,9 @@
 #include "App/AppCore.hpp"
 #include "App/App.hpp"
 
+#include <imgui.h>
+#include "UI/ImGuiWin32.h"
+
 using namespace DirectX;
 
 namespace
@@ -13,6 +16,7 @@ namespace
 };
 
 LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
+extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 // Indicates to hybrid graphics systems to prefer the discrete part by default
 extern "C"
@@ -95,15 +99,15 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, 
 
         GetClientRect(hwnd, &rc);
         
-        try
+        //try
         {
             g_app->Initialize(hwnd, rc.right - rc.left, rc.bottom - rc.top);
         }
-        catch (std::exception ex)
+        /*catch (std::exception ex)
         {
             MessageBoxA(hwnd, ex.what(), "Error", MB_OK | MB_ICONEXCLAMATION);
             return 1;
-        }
+        }*/
     }
 
     // Main message loop
@@ -140,6 +144,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     static bool s_minimized = false;
     static bool s_fullscreen = false;
     // TODO: Set s_fullscreen to true if defaulting to fullscreen.
+
+    if (ImGui_ImplWin32_WndProcHandler(hWnd, message, wParam, lParam))
+        return true;
 
     auto game = reinterpret_cast<App*>(GetWindowLongPtr(hWnd, GWLP_USERDATA));
 
@@ -224,8 +231,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             }
         }
         
-        Mouse::ProcessMessage(message, wParam, lParam);
-        
         break;
 
     case WM_POWERBROADCAST:
@@ -288,21 +293,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         // A menu is active and the user presses a key that does not correspond
         // to any mnemonic or accelerator key. Ignore so we don't produce an error beep.
         return MAKELRESULT(0, MNC_CLOSE);
-
-    case WM_INPUT:
-    case WM_MOUSEMOVE:
-    case WM_LBUTTONDOWN:
-    case WM_LBUTTONUP:
-    case WM_RBUTTONDOWN:
-    case WM_RBUTTONUP:
-    case WM_MBUTTONDOWN:
-    case WM_MBUTTONUP:
-    case WM_MOUSEWHEEL:
-    case WM_XBUTTONDOWN:
-    case WM_XBUTTONUP:
-    case WM_MOUSEHOVER:
-        Mouse::ProcessMessage(message, wParam, lParam);
-        break;
     }
 
     return DefWindowProc(hWnd, message, wParam, lParam);
