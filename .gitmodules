@@ -4,8 +4,8 @@
 [submodule "Lib/DirectXTK"]
 	path = Lib/DirectXTK
 	url = https://github.com/microsoft/DirectXTK.git
-[submodule "Lib/imgui"]
-	path = Lib/imgui
+[submodule "Lib/imgui/imgui"]
+	path = Lib/imgui/imgui
 	url = https://github.com/ocornut/imgui.git
 [submodule "Lib/imgui-node-editor"]
 	path = Lib/imgui-node-editor
