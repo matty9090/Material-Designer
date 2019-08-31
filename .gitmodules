@@ -7,3 +7,6 @@
 [submodule "Lib/imgui-node-editor"]
 	path = Lib/imgui-node-editor
 	url = https://github.com/thedmd/imgui-node-editor.git
+[submodule "Lib/imgui/imgui"]
+	path = Lib/imgui/imgui
+	url = https://github.com/ocornut/imgui.git
