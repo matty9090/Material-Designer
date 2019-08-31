@@ -4,16 +4,20 @@ project (MaterialDesigner)
 set(CMAKE_CXX_STANDARD 14)
 option(ENABLE_TESTING "Turns on testing" OFF)
 
+# Add module files
+list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/CMake)
+
 # DirectXTK
 add_subdirectory(Lib/DirectXTK)
 include_directories(Lib/DirectXTK/Inc)
 
 # ImGui
-file(GLOB IMGUI_SRC_FILES Lib/imgui/imgui.cpp
-                          Lib/imgui/imgui_draw.cpp
-                          Lib/imgui/imgui_widgets.cpp)
+include_directories(Lib/imgui/imgui)
 
-include_directories(Lib/imgui)
+# ImGui Node Editor
+find_package(imgui_node_editor REQUIRED)
+set(IMGUI_NODE_EDITOR_DIR Lib/imgui-node-editor)
+include_directories(${IMGUI_NODE_EDITOR_DIR}/NodeEditor/Include)
 
 # Material Designer
 add_subdirectory(Source)

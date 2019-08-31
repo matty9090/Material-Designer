@@ -1,6 +1,7 @@
 #pragma once
 
 #include <d3d11.h>
+#include <imgui_node_editor.h>
 
 class UI
 {
@@ -13,5 +14,5 @@ public:
     void Reset();
 
 private:
-    ID3D11DeviceContext* Context;
+    ax::NodeEditor::EditorContext* NodeContext = nullptr;
 };

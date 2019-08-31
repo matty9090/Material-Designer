@@ -1,11 +1,13 @@
-ADD_DEFINITIONS(-DUNICODE)
+add_definitions(-DUNICODE)
 
 file(GLOB_RECURSE SRC_FILES *.cpp)
 list(REMOVE_ITEM SRC_FILES App/MaterialDesigner.cpp)
 
 include_directories(./)
 
-add_library(MaterialDesignerLib ${SRC_FILES} ${IMGUI_SRC_FILES})
+add_library(MaterialDesignerLib ${SRC_FILES})
+target_link_libraries(MaterialDesignerLib imgui_node_editor)
+
 add_executable(MaterialDesigner WIN32 App/MaterialDesigner.cpp ../Resources/Resource.rc)
 
 target_link_libraries(MaterialDesigner MaterialDesignerLib)

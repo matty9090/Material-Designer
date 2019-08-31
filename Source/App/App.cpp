@@ -156,10 +156,7 @@ void App::CreateDeviceDependentResources()
 {
     auto device = m_deviceResources->GetD3DDevice();
     auto context = m_deviceResources->GetD3DDeviceContext();
-
-    auto& tm = FAssetManager::Get();
-    tm.Initialize(device);
-    tm.LoadTexture("Background", L"Img/bg.png");
+    auto& assetManager = FAssetManager::Get();
 
     m_ui = std::make_unique<UI>(context, m_deviceResources->GetWindow());
 }
