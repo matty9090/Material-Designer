@@ -12,7 +12,7 @@ add_subdirectory(Lib/DirectXTK)
 include_directories(Lib/DirectXTK/Inc)
 
 # ImGui
-include_directories(Lib/imgui/imgui)
+include_directories(Lib/imgui)
 
 # ImGui Node Editor
 find_package(imgui_node_editor REQUIRED)

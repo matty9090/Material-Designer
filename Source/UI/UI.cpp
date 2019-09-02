@@ -6,9 +6,10 @@
 #include "ImGuiDx11.h"
 #include "ImGuiWin32.h"
 
-namespace Node = ax::NodeEditor;
+namespace Ed = ax::NodeEditor;
 
 UI::UI(ID3D11DeviceContext* context, HWND hwnd)
+    : TestNode("Test", {{ EPin::Float, "Magnitude" }, { EPin::Float, "Op" }}, {{ EPin::Float, "Scaled" }})
 {    
     ID3D11Device* device = nullptr;
     context->GetDevice(&device);
@@ -20,7 +21,9 @@ UI::UI(ID3D11DeviceContext* context, HWND hwnd)
     ImGui_ImplWin32_Init(hwnd);
     ImGui_ImplDX11_Init(device, context);
 
-    NodeContext = Node::CreateEditor();
+    Ed::Config config;
+    config.SettingsFile = "Settings.json";
+    NodeContext = Ed::CreateEditor(&config);
 }
 
 UI::~UI()
@@ -28,7 +31,7 @@ UI::~UI()
     ImGui_ImplDX11_Shutdown();
     ImGui_ImplWin32_Shutdown();
     ImGui::DestroyContext();
-    Node::DestroyEditor(NodeContext);
+    Ed::DestroyEditor(NodeContext);
 }
 
 void UI::Render()
@@ -37,39 +40,46 @@ void UI::Render()
     ImGui_ImplWin32_NewFrame();
     ImGui::NewFrame();
 
-    bool open = true;
-    ImGui::Begin("Test", &open, ImGuiWindowFlags_::ImGuiWindowFlags_AlwaysAutoResize);
-    ImGui::Text("Hello, world %d", 123);
-    if (ImGui::Button("Save"))
+    ImGuiIO& io = ImGui::GetIO();
+
+    ImGui::SetNextWindowPos(ImVec2(0, 0));
+    ImGui::SetNextWindowSize(io.DisplaySize);
+
+    ImGui::Begin("Content", nullptr,
+        ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove |
+        ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoSavedSettings |
+        ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_MenuBar);
+
+    if (ImGui::BeginMenuBar())
     {
-        // do stuff
+        if (ImGui::BeginMenu("File"))
+        {
+            if (ImGui::MenuItem("Open..")) { /* Do stuff */ }
+            if (ImGui::MenuItem("Save")) { /* Do stuff */ }
+            if (ImGui::MenuItem("Close")) { PostQuitMessage(0); }
+
+            ImGui::EndMenu();
+        }
+
+        ImGui::EndMenuBar();
     }
-    char buf[200] = "Testing...";
-    float f = 0.0f;
 
-    ImGui::InputText("string", buf, IM_ARRAYSIZE(buf));
-    ImGui::SliderFloat("float", &f, 0.0f, 1.0f);
+    Ed::SetCurrentEditor(NodeContext);
+    Ed::Begin("Material Editor", ImVec2(0.0f, 0.0f));
+    
+    TestNode.Draw();
+
+    Ed::End();
     ImGui::End();
-
-    Node::SetCurrentEditor(NodeContext);
-    Node::Begin("My Editor", ImVec2(0.0, 0.0f));
-    int uniqueId = 1;
-    // Start drawing nodes.
-    Node::BeginNode(uniqueId++);
-    ImGui::Text("Node A");
-    Node::BeginPin(uniqueId++, Node::PinKind::Input);
-    ImGui::Text("-> In");
-    Node::EndPin();
-    ImGui::SameLine();
-    Node::BeginPin(uniqueId++, Node::PinKind::Output);
-    ImGui::Text("Out ->");
-    Node::EndPin();
-    Node::EndNode();
-    Node::End();
-    Node::SetCurrentEditor(nullptr);
 
     ImGui::Render();
     ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
+
+    if (FirstFrame)
+        Ed::NavigateToContent(0.0f);
+
+    Ed::SetCurrentEditor(nullptr);
+    FirstFrame = false;
 }
 
 void UI::Update(float dt)

@@ -3,8 +3,8 @@ if (TARGET imgui)
     return()
 endif()
 
-set(_imgui_SourceDir ${CMAKE_SOURCE_DIR}/Lib/imgui)
-set(_imgui_BinaryDir ${CMAKE_BINARY_DIR}/Lib/imgui)
+set(_imgui_SourceDir ${CMAKE_SOURCE_DIR}/Lib/imgui-node-editor/ThirdParty/imgui)
+set(_imgui_BinaryDir ${CMAKE_BINARY_DIR}/Lib/imgui-node-editor/ThirdParty/imgui)
 
 add_subdirectory(${_imgui_SourceDir} ${_imgui_BinaryDir})
 

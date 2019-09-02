@@ -1,7 +1,10 @@
 #pragma once
 
 #include <d3d11.h>
+#include <vector>
 #include <imgui_node_editor.h>
+
+#include "Node.hpp"
 
 class UI
 {
@@ -14,5 +17,8 @@ public:
     void Reset();
 
 private:
+    FNode TestNode;
+
+    bool FirstFrame = true;
     ax::NodeEditor::EditorContext* NodeContext = nullptr;
 };
